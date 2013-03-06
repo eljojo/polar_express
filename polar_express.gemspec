@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ["José Tomás Albornoz"]
   spec.email         = ["jojo@eljojo.net"]
   spec.description   = %q{Package tracking done right.}
-  spec.summary       = %q{TODO: Write a gem summary}
+  spec.summary       = %q{An easy an fun way of tracking packages. info = PolarExpress.new('DHL', '123456789').track!}
   spec.homepage      = ""
   spec.license       = "mit"
 
@@ -18,7 +18,7 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ["lib"]
 
-  spec.add_development_dependency "bundler", "~> 1.3"
+  spec.add_development_dependency "bundler", "~> 1.3.0.pre"
   spec.add_development_dependency "rake"
   spec.add_development_dependency "rspec"
 end

@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
   spec.description   = %q{Package tracking done right.}
   spec.summary       = %q{TODO: Write a gem summary}
   spec.homepage      = ""
-  spec.license       = "private"
+  spec.license       = "mit"
 
   spec.files         = `git ls-files`.split($/)
   spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }

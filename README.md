@@ -2,6 +2,10 @@
 
 Get on board of The Polar Express and let's have a train ride to package tracking!
 
+# Gem in development
+Note: this gem is in current development, so don't expect anything to work yet (not even the usage example!!!)
+Feel free to contribute to the project :)
+
 ## Installation
 
 Add this line to your application's Gemfile:

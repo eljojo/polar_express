@@ -2,8 +2,9 @@
 
 Get on board of The Polar Express and let's have a train ride to package tracking!
 
-# Gem in development
+## Gem in development
 Note: this gem is in current development, so don't expect anything to work yet (not even the usage example!!!)
+
 Feel free to contribute to the project :)
 
 ## Installation
@@ -23,7 +24,9 @@ Or install it yourself as:
 ## Usage from your Rails Controllers
 
 ```ruby
-info = PolarExpress.new('DHL', '123456789').track!
+@tracker = PolarExpress.new('DHL', '017219678663')
+info = @tracker.track!
+info.status # => :delivered
 ```
 
 

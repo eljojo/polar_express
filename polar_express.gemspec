@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["jojo@eljojo.net"]
   spec.description   = %q{Package tracking done right.}
   spec.summary       = %q{An easy an fun way of tracking packages. info = PolarExpress.new('DHL', '123456789').track!}
-  spec.homepage      = ""
+  spec.homepage      = "https://github.com/eljojo/polar_express"
   spec.license       = "mit"
 
   spec.files         = `git ls-files`.split($/)

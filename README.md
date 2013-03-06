@@ -34,3 +34,9 @@ info = PolarExpress.new('DHL', '123456789').track!
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
+
+
+### What can I help with?
+- discuss about the structure of the gem. is there space for improvement?
+- work on DHL implementation
+- write more tests

@@ -2,20 +2,22 @@ require 'spec_helper'
 describe PolarExpress do
   context 'Gem Basics' do
     it "creates a new instance of the gem" do
-      @tracker = PolarExpress.new('DHL', '017219678663')
-      @tracker.shipping_number.should == '017219678663'
+      @tracker = PolarExpress.new('DHL', '1234')
+      @tracker.should respond_to :shipping_number
     end
   end
   context 'DHL' do
     before do
-      @tracker = PolarExpress.new('DHL', '017219678663')
+      @tracker = PolarExpress.new('DHL', '334998011255')
     end
-    it "recognizes DHL" do
+    it "recognizes it" do
       @tracker.courier.should eq :DHL
     end
-    it "tracks DHL" do
-      info = @tracker.track!
-      info.status.should eq :delivered
+    it "tracks it" do
+      @tracker.track!.status.should eq :delivered
+    end
+    it "records tracking statuses" do
+      @tracker.track!.statuses.length.should > 1
     end
   end
 end

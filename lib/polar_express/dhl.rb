@@ -9,6 +9,8 @@ module PolarExpress
         info = ShippingInfo.new(@number)
         info.percentage = package_percentage
         info.statuses   = timeline
+        require 'pp' 
+        pp info.statuses
         info
       end
       private
@@ -25,22 +27,30 @@ module PolarExpress
           page.css("tr#toggle-#{@number}_1 table tbody tr").map do |tr|
             {
               date: DateTime.parse(tr.css('td.overflow').text.strip),
-              city: tr.css('td.location').text.strip,
-              status: text_to_status(tr.css('td.status').text.strip)
+              city: (city = tr.css('td.location').text.strip) == '--' ? nil : city,
+              status: text_to_status(status_text = tr.css('td.status').text.strip),
+              text: status_text
             }
           end
         end
+        # TODO: look for better status names
         def text_to_status(text)
           case text
-          when 'The shipment has been successfully delivered'
+          when /The recipient has picked up the shipment from/
             :delivered
-          when "The shipment has been loaded onto the delivery vehicle"
+          when /The shipment has been successfully delivered/
+            :delivered
+          when /The shipment is on its way to the postal retail outlet/
+            :in_delivery_vehicle_to_retail_outler
+          when /The shipment has been delivered for pick-up at the/
+            :waiting_for_pick_up_in_retail_office
+          when /The shipment has been loaded onto the delivery vehicle/
             :in_delivery_vehicle
-          when "The shipment has been processed in the destination parcel center"
-            :destination_city
-          when "The shipment has been processed in the parcel center of origin"
-            :origin_city
-          when "The instruction data for this shipment have been provided by the sender to DHL electronically"
+          when /The shipment has been processed in the destination parcel center/
+            :destination_distribution_center
+          when /The shipment has been processed in the parcel center of origin/
+            :origin_distribution_center
+          when /The instruction data for this shipment have been provided by the sender to DHL electronically/
             :shipping_instructions_received
           else
             :other

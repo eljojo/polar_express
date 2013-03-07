@@ -1,4 +1,3 @@
-require 'pp'
 module PolarExpress
   module DHL
     class Tracker

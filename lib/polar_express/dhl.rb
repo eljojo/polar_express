@@ -9,8 +9,6 @@ module PolarExpress
         info = ShippingInfo.new(@number)
         info.percentage = package_percentage
         info.statuses   = timeline
-        require 'pp' 
-        pp info.statuses
         info
       end
       private
@@ -47,9 +45,9 @@ module PolarExpress
           when /The shipment has been loaded onto the delivery vehicle/
             :in_delivery_vehicle
           when /The shipment has been processed in the destination parcel center/
-            :destination_distribution_center
+            :destination_parcel_center
           when /The shipment has been processed in the parcel center of origin/
-            :origin_distribution_center
+            :origin_parcel_center
           when /The instruction data for this shipment have been provided by the sender to DHL electronically/
             :shipping_instructions_received
           else

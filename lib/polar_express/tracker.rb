@@ -17,6 +17,8 @@ module PolarExpress
         case name.upcase
         when 'DHL'
           :DHL
+        when 'GLS'
+          :GLS
         end
       end
   end

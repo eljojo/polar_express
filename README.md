@@ -27,42 +27,20 @@ Or install it yourself as:
 @tracker = PolarExpress.new('DHL', '017219678663')
 info = @tracker.track!
 info.status # => :delivered
-info.percentage # => 100
 info.statuses 
 # [{:date=>
-#    #<DateTime: 2012-12-05T15:52:00+08:00 ((2456267j,28320s,0n),+28800s,2299161j)>,
+#    #<DateTime: 2012-12-05T15:52:00+08:00>,
 #   :city=>nil,
 #   :status=>:shipping_instructions_received,
 #   :text=>
 #    "The instruction data for this shipment have been provided by the sender to DHL electronically"},
 #  {:date=>
-#    #<DateTime: 2012-12-05T19:47:00+08:00 ((2456267j,42420s,0n),+28800s,2299161j)>,
-#   :city=>"Hagen",
-#   :status=>:origin_distribution_center,
-#   :text=>"The shipment has been processed in the parcel center of origin"},
-#  {:date=>
-#    #<DateTime: 2012-12-06T05:01:00+08:00 ((2456267j,75660s,0n),+28800s,2299161j)>,
-#   :city=>"Rüdersdorf",
-#   :status=>:destination_distribution_center,
-#   :text=>"The shipment has been processed in the destination parcel center"},
-#  {:date=>
-#    #<DateTime: 2012-12-06T07:31:00+08:00 ((2456267j,84660s,0n),+28800s,2299161j)>,
+#    #<DateTime: 2012-12-06T07:31:00+08:00>,
 #   :city=>"Berlin-Friedrichshain",
 #   :status=>:in_delivery_vehicle,
 #   :text=>"The shipment has been loaded onto the delivery vehicle"},
 #  {:date=>
-#    #<DateTime: 2012-12-06T07:32:00+08:00 ((2456267j,84720s,0n),+28800s,2299161j)>,
-#   :city=>nil,
-#   :status=>:in_delivery_vehicle_to_retail_outler,
-#   :text=>"The shipment is on its way to the postal retail outlet."},
-#  {:date=>
-#    #<DateTime: 2012-12-06T17:46:00+08:00 ((2456268j,35160s,0n),+28800s,2299161j)>,
-#   :city=>nil,
-#   :status=>:waiting_for_pick_up_in_retail_office,
-#   :text=>
-#    "The shipment has been delivered for pick-up at the postal retail outlet Frankfurter Allee 71-77 10247 Berlin."},
-#  {:date=>
-#    #<DateTime: 2012-12-12T15:42:00+08:00 ((2456274j,27720s,0n),+28800s,2299161j)>,
+#    #<DateTime: 2012-12-12T15:42:00+08:00>,
 #   :city=>nil,
 #   :status=>:delivered,
 #   :text=>"The recipient has picked up the shipment from the retail outlet"}]

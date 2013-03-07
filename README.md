@@ -21,7 +21,7 @@ Or install it yourself as:
 
     $ gem install polar_express
 
-## Usage from your Rails Controllers
+## Usage
 
 ```ruby
 @tracker = PolarExpress.new('DHL', '017219678663')
@@ -40,6 +40,7 @@ info.status # => :delivered
 
 
 ### What can I help with?
-- discuss about the structure of the gem. is there space for improvement?
 - work on DHL implementation
 - write more tests
+- documentation. rdoc?
+- discuss about the structure of the gem. is there space for improvement?

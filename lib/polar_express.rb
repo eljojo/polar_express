@@ -5,6 +5,8 @@ require "polar_express/dhl"
 require "polar_express/shipping_info"
 
 module PolarExpress
+  # I don't really know if doing the requires in here helps to keep them under this scope.
   require 'open-uri'
   require 'nokogiri'
+  require 'date'
 end

@@ -8,7 +8,7 @@ describe PolarExpress do
   end
   context 'DHL' do
     before do
-      @tracker = PolarExpress.new('DHL', '334998011255')
+      @tracker = PolarExpress.new('DHL', '777707971894')
     end
     it "recognizes it" do
       @tracker.courier.should eq :DHL
@@ -19,6 +19,9 @@ describe PolarExpress do
     it "records tracking statuses" do
       statuses = @tracker.track!.statuses
       statuses.length.should > 1
+    end
+    it "tracks date correctly" do
+      
     end
   end
   context 'GLS' do

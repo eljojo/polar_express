@@ -50,6 +50,8 @@ module PolarExpress
             :origin_parcel_center
           when /The instruction data for this shipment have been provided by the sender to DHL electronically/
             :shipping_instructions_received
+          when /A .+ attempt at delivery is being made/
+            :new_delivery_attempt
           else
             :other
           end

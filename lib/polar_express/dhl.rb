@@ -24,7 +24,7 @@ module PolarExpress
         def timeline
           page.css("tr#toggle-#{@number}_1 table tbody tr").map do |tr|
             {
-              date: DateTime.parse(tr.css('td.overflow').text.strip),
+              date: DateTime.parse(get_date(tr.css('td.overflow').text)),
               city: (city = tr.css('td.location').text.strip) == '--' ? nil : city,
               status: text_to_status(status_text = tr.css('td.status').text.strip),
               text: status_text
@@ -53,6 +53,9 @@ module PolarExpress
           else
             :other
           end
+        end
+        def get_date(str)
+          str.scan(/[\d]{1,2}\.[\d]{1,2}\.[\d]{4} [\d]{1,2}:[\d]{1,2}/).flatten.first
         end
     end
   end

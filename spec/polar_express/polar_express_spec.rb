@@ -21,7 +21,7 @@ describe PolarExpress do
       statuses.length.should > 1
     end
     it "tracks date correctly" do
-      
+      @tracker.track!.statuses.first[:date].should == DateTime.new(2013, 03, 15, 17, 45)
     end
   end
   context 'GLS' do

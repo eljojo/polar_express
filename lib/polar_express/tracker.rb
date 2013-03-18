@@ -7,7 +7,7 @@ module PolarExpress
       @courier_tracker = Object.const_get("PolarExpress::#{@courier}::Tracker").new(@shipping_number)
     end
     def track!
-      @courier_tracker.track!
+      @track ||= @courier_tracker.track!
     end
     
     private

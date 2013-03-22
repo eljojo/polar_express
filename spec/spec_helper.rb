@@ -1,4 +1,5 @@
 require 'polar_express'
+require 'pp'
 
 # http://stackoverflow.com/questions/1819614/how-do-i-globally-configure-rspec-to-keep-the-color-and-format-specdoc-o
 RSpec.configure do |config|

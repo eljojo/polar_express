@@ -12,4 +12,5 @@ module PolarExpress
   require 'nokogiri'
   require 'date'
   require 'json'
+  require 'net/http'
 end

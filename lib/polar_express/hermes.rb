@@ -6,32 +6,29 @@ module PolarExpress
         @number = number
       end
       def track!
-        tracking_form_url
-        # info = ShippingInfo.new(@number)
-        # info.percentage = package_percentage
-        # info.statuses   = timeline
-        # info
+        info = ShippingInfo.new(@number)
+        info.statuses = timeline
+        info
       end
       private
-        def tracking_form_url
+        def tracking_form_uri
           html = Nokogiri::HTML open 'https://www.myhermes.de/wps/portal/paket/Home/privatkunden/sendungsverfolgung/'
-          pp html.css('form#shipmentTracingDTO')['action']
+          URI('https://www.myhermes.de' + html.css('form#shipmentTracingDTO').first['action'])
         end
-        def tracking_url
-          "http://nolp.dhl.de/nextt-online-public/set_identcodes.do?lang=en&idc=#{@number}"
+        def post_tracking_page
+          res = Net::HTTP.post_form(tracking_form_uri, 'shipmentID' => @number)
+          res.body
         end
         def page
-          @page ||= Nokogiri::HTML open tracking_url
-        end
-        def package_percentage
-          page.css("#progress-#{@number}_1").text.scan(/([\d]+)/).flatten.first.to_i
+          @page ||= Nokogiri::HTML post_tracking_page
         end
         def timeline
-          page.css("tr#toggle-#{@number}_1 table tbody tr").map do |tr|
+          page.css("table.table_shipmentDetails tbody tr").map do |tr|
+            tds = tr.css('td') 
             {
-              date: DateTime.parse(get_date(tr.css('td.overflow').text)),
-              city: (city = tr.css('td.location').text.strip) == '--' ? nil : city,
-              status: text_to_status(status_text = tr.css('td.status').text.strip),
+              date: DateTime.parse(tds[0].text + " " + tds[1].text),
+              # city: (city = tr.css('td.location').text.strip) == '--' ? nil : city,
+              status: text_to_status(status_text = tds.last.text.strip),
               text: status_text
             }
           end
@@ -60,9 +57,6 @@ module PolarExpress
           else
             :other
           end
-        end
-        def get_date(str)
-          str.scan(/[\d]{1,2}\.[\d]{1,2}\.[\d]{4} [\d]{1,2}:[\d]{1,2}/).flatten.first
         end
     end
   end

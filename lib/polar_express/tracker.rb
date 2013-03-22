@@ -4,7 +4,6 @@ module PolarExpress
     def initialize(courier, shipping_number)
       @courier         = identify_courier(courier)
       @shipping_number = shipping_number
-      puts "PolarExpress::#{@courier}::Tracker"
       @courier_tracker = Object.const_get("PolarExpress::#{@courier}::Tracker").new(@shipping_number)
     end
     def track!

@@ -23,10 +23,15 @@ module PolarExpress
         end
         def timeline
           page.css("tr#toggle-#{@number}_1 table tbody tr").map do |tr|
+            if tr.css('.retoure_left').length > 0 then
+              status_text = tr.css('td.retoure_right div').last.text.strip
+            else
+              status_text = tr.css('td.status').text.strip
+            end
             {
               date: DateTime.parse(get_date(tr.css('td.overflow').text)),
               city: (city = tr.css('td.location').text.strip) == '--' ? nil : city,
-              status: text_to_status(status_text = tr.css('td.status').text.strip),
+              status: text_to_status(status_text),
               text: status_text
             }
           end

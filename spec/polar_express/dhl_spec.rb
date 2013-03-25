@@ -17,5 +17,9 @@ describe PolarExpress do
     it "tracks date correctly" do
       @tracker.track!.statuses.first[:date].should == DateTime.new(2013, 03, 15, 17, 45)
     end
+    it "handles package refusals" do
+      statuses = @tracker.track!.statuses
+      statuses.find { |status| status[:status] == :return_shipment }.should_not be_nil
+    end
   end
 end

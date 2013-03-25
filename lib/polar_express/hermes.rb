@@ -1,5 +1,5 @@
 module PolarExpress
-  module Hermes
+  module Hermes  
     class Tracker
       attr_accessor :number
       def initialize(number)
@@ -22,42 +22,77 @@ module PolarExpress
         def page
           @page ||= Nokogiri::HTML post_tracking_page
         end
+        # TODO: implement cities
         def timeline
           page.css("table.table_shipmentDetails tbody tr").map do |tr|
-            tds = tr.css('td') 
+            tds = tr.css('td')
+            status_text = tds.last.text.strip
             {
               date: DateTime.parse(tds[0].text + " " + tds[1].text),
-              # city: (city = tr.css('td.location').text.strip) == '--' ? nil : city,
-              status: text_to_status(status_text = tds.last.text.strip),
+              city: nil,
+              status: text_to_status(status_text),
               text: status_text
             }
           end
         end
-        # TODO: look for better status names
         def text_to_status(text)
-          case text
-          when /The recipient has picked up the shipment from/
-            :delivered
-          when /The shipment has been successfully delivered/
-            :delivered
-          when /The shipment is on its way to the postal retail outlet/
-            :in_delivery_vehicle_to_retail_outler
-          when /The shipment has been delivered for pick-up at the/
-            :waiting_for_pick_up_in_retail_office
-          when /The shipment has been loaded onto the delivery vehicle/
-            :in_delivery_vehicle
-          when /The shipment has been processed in the destination parcel center/
-            :destination_parcel_center
-          when /The shipment has been processed in the parcel center of origin/
-            :origin_parcel_center
-          when /The instruction data for this shipment have been provided by the sender to DHL electronically/
-            :shipping_instructions_received
-          when /A .+ attempt at delivery is being made/
-            :new_delivery_attempt
-          else
-            :other
+          match = Statuses.find do |status, regexes|
+            regexes.find { |regex| text =~ regex }
           end
+          match.andand.first || :other
         end
     end
+    
+    Statuses = {
+      :at_distribution_hub => [
+        /Die Sendung wurde im Hermes (.+) sortiert/,
+      ],
+      :delivery_failed => [
+        /Bitte seien Sie uns bei der Adressklärung behilflich/,
+        /Der zu kassierende Betrag EUR (.+) lag beim Zustellversuch nicht vor/,
+        /Die angegebene Anschrift konnte nicht gefunden werden/,
+        /Die Annahme der Sendung wurde verweigert/,
+      ],
+      :delivery_succeeded => [
+        /Die Sendung wurde zugestellt/,
+      ],
+      :destination_parcel_center => [
+          /Die Sendung (wurde von|ist in) der Hermes Niederlassung (.+) (übernommen|eingetroffen)/,
+      ],
+      :in_delivery_vehicle => [
+        /Die Sendung befindet sich in der Zustellung/,
+        /Die Sendung ist auf Tour gegangen/,
+      ],
+      :in_shipment => [
+        /Die Sendung befindet sich auf dem Weg in die zuständige Hermes Niederlassung/,
+        /Die Sendung hat das Lager des Versenders verlassen/,
+        /Die Sendung wurde abgeholt/,
+      ],
+      :new_delivery_attempt => [
+        /Der Empfänger wurde nicht angetroffen/,
+        /Wir werden einen weiteren Zustellversuch durchführen/,
+        /Der Empfänger wurde zum (1|2). Mal nicht angetroffen. Wir werden einen weiteren Zustellversuch durchführen/,
+      ],
+      :on_hold_at_depot => [
+        /Die Sendung wird in der Hermes Niederlassung (.+) aufbewahrt/,
+      ],
+      :return_pickup_from_customer => [
+        /Der Abholauftrag ist in der Hermes Niederlassung eingegangen/,
+        /Der Abholauftrag wurde an die Hermes Logistik Gruppe übermittelt/,
+        /Die Abholung wird durchgeführt/,
+      ],
+      :return_shipment => [
+        /Die Sendung wird an den Versender zurückgeführt/,
+        /Die Sendung wurde im Hermes PaketShop abgeholt und für den weiteren Transport sortiert/,
+      ],
+      :shipping_instructions_received => [
+        /Die Sendungsdaten wurden an die Hermes Logistik Gruppe übermittelt/,
+      ],
+      :waiting_for_pickup_by_customer => [
+        /Der Empfänger wurde zum 3. Mal nicht angetroffen/,
+        /Die Sendung ist im Hermes PaketShop eingegangen/,
+        /Die Sendung liegt im Hermes PaketShop zur Abholung bereit/,
+      ]
+    }.freeze
   end
 end

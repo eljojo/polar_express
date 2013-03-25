@@ -33,13 +33,13 @@ module PolarExpress
               status: text_to_status(status_text),
               text: status_text
             }
-          end
+          end.reverse
         end
         def text_to_status(text)
           match = Statuses.find do |status, regexes|
             regexes.find { |regex| text =~ regex }
           end
-          match.andand.first || :other
+          (match && match.first) || :other
         end
     end
     

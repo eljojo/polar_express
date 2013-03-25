@@ -13,7 +13,7 @@ module PolarExpress
       end
       private
         def tracking_url
-          "http://nolp.dhl.de/nextt-online-public/set_identcodes.do?lang=en&idc=#{@number}"
+          "http://nolp.dhl.de/nextt-online-public/set_identcodes.do?lang=de&idc=#{@number}"
         end
         def page
           @page ||= Nokogiri::HTML open tracking_url
@@ -31,34 +31,96 @@ module PolarExpress
             }
           end
         end
-        # TODO: look for better status names
         def text_to_status(text)
-          case text
-          when /The recipient has picked up the shipment from/
-            :delivered
-          when /The shipment has been successfully delivered/
-            :delivered
-          when /The shipment is on its way to the postal retail outlet/
-            :in_delivery_vehicle_to_retail_outler
-          when /The shipment has been delivered for pick-up at the/
-            :waiting_for_pick_up_in_retail_office
-          when /The shipment has been loaded onto the delivery vehicle/
-            :in_delivery_vehicle
-          when /The shipment has been processed in the destination parcel center/
-            :destination_parcel_center
-          when /The shipment has been processed in the parcel center of origin/
-            :origin_parcel_center
-          when /The instruction data for this shipment have been provided by the sender to DHL electronically/
-            :shipping_instructions_received
-          when /A .+ attempt at delivery is being made/
-            :new_delivery_attempt
-          else
-            :other
+          match = Statuses.find do |status, regexes|
+            regexes.find { |regex| text =~ regex }
           end
+          (match && match.first) || :other
         end
         def get_date(str)
           str.scan(/[\d]{1,2}\.[\d]{1,2}\.[\d]{4} [\d]{1,2}:[\d]{1,2}/).flatten.first
         end
     end
+    Statuses = {
+      :delivery_failed => [
+        /Aufgrund eines Adressfehlers konnte die Sendung nicht zugestellt werden/,
+        /Aus unvorhersehbaren Gründen konnte die Sendung nicht zugestellt werden/,
+        /Der Empfänger wurde nicht angetroffen. Die Sendung konnte nicht zugestellt werden und wird gelagert. Der Empfänger wurde benachrichtigt/,
+        /Die Sendung konnte heute nicht zugestellt werden/,
+        /Die Sendung konnte nicht zugestellt werden, der Empfänger wurde benachrichtigt/,
+        /Empfangsadresse bei Zustellversuch geschlossen/,
+        /Erfolgloser Zustellversuch, Empfänger nicht zu Hause/,
+        /Zustellung in Packstation nicht möglich/,
+      ],
+      :delivery_succeeded => [
+        /Der Empfänger hat die Sendung aus der PACKSTATION abgeholt/,
+        /Der Empfänger hat die Sendung in der Filiale abgeholt/,
+        /Die Sendung wurde abgeholt/,
+        /Die Sendung wurde dem Empfänger per vereinfachter Firmenzustellung ab Zustellbasis zugestellt/,
+        /Die Sendung wurde erfolgreich zugestellt/,
+        /Die Überweisung des Nachnahme-Betrags an den Zahlungsempfänger ist erfolgt/,
+      ],
+      :destination_parcel_center => [
+        /Die Sendung wurde im Ziel-Paketzentrum bearbeitet/,
+        /Die Sendung wurde innerhalb des Ziel-Paketzentrums weitergeleitet/,
+      ],
+      :in_delivery_vehicle => [
+        /Die Sendung befindet sich auf dem Weg zur PACKSTATION/,
+        /Die Sendung wird zur Abholung in die Filiale (.+) gebracht/,
+        /Die Sendung wurde in das Zustellfahrzeug geladen/,
+        /in Auslieferung durch Kurier/,
+      ],
+      :in_shipment => [
+        /Die Auslandssendung wurde im Export-Paketzentrum bearbeitet/,
+        /Die Sendung aus dem Ausland ist im Import-Paketzentrum eingetroffen/,
+        /Die Sendung hat das Import-Paketzentrum im Zielland verlassen/,
+        /Die Sendung ist im Zielland eingetroffen/,
+        /Die Sendung wird ins Zielland transportiert und dort an die Zustellorganisation (.+) übergeben/,
+        /Die Sendung wird ins Zielland transportiert und dort an die Zustellorganisation übergeben/,
+        /Die Sendung wird ins Zielland transportiert/,
+        /Die Sendung wird zur Verzollung im Zielland vorbereitet/,
+        /Die Sendung wurde dem Empfänger per vereinfachter Firmenzustellung ab Paketzentrum zugestellt/,
+        /Die Sendung wurde vom Absender in der Filiale eingeliefert/,
+        /Geplant für Zustellung/,
+        /Sendung hat den Abholstandort verlassen/,
+        /Sendung hat die Umschlagbasis verlassen/,
+        /Sendung ist im Zustellstandort eingegangen/,
+        /Sendung ist in den Abholstandort eingegangen/,
+        /Sendung ist in der Umschlagbasis eingegangen/,
+        /Sendung wurde weiter bearbeitet/,
+        /Verzollung abgeschlossen/,
+      ],
+      :new_delivery_attempt => [
+        /Es erfolgt ein 2. Zustellversuch/,
+      ],
+      :on_hold => [
+        /Die für die Auslieferung der Sendung erforderlichen Daten liegen nicht vor. Die Sendung wird zurückgestellt/,
+        /Die Sendung wird vorübergehend bis zur Zustellung in der Zustellbasis gelagert/,
+        /Die Sendung wurde beschädigt und wird zur Nachverpackung in das Paketzentrum zurückgesandt/,
+        /Die Sendung wurde fehlgeleitet und konnte nicht zugestellt werden. Die Sendung wird umadressiert und an den Empfänger weitergeleitet/,
+        /Die Sendung wurde zurückgestellt. Die Zustellung erfolgt voraussichtlich am nächsten Werktag/,
+        /Nicht durch DHL beeinflussbare Verzögerung in der Verzollung/,
+      ],
+      :on_hold_at_depot => [
+        /Sendung nach Zustellversuch zurück in DHL Station/,
+        /Sendung zur Aufbewahrung in der Station/,
+      ],
+      :origin_parcel_center => [
+        /Die Auslands-Sendung wurde im Start-Paketzentrum bearbeitet/,
+        /Die Sendung wurde im Paketzentrum bearbeitet/,
+        /Die Sendung wurde im Start-Paketzentrum bearbeitet/,
+      ],
+      :return_shipment => [
+        /Die Sendung wurde nicht abgeholt und wird zurückgesandt/,
+        /Rücksendung eingeleitet/,
+      ],
+      :shipping_instructions_received => [
+        /Die Auftragsdaten zu dieser Sendung wurden vom Absender elektronisch an DHL übermittelt/,
+      ],
+      :waiting_for_pickup_by_customer => [
+        /Die Sendung liegt in der Filiale zur Abholung bereit/,
+        /Die Sendung liegt in der PACKSTATION zur Abholung bereit/,
+      ],
+    }.freeze
   end
 end

@@ -13,4 +13,5 @@ module PolarExpress
   require 'date'
   require 'json'
   require 'net/http'
+  require "use_ssl_certs.rb"
 end

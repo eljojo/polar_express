@@ -1,3 +1,4 @@
+# encoding: utf-8
 module PolarExpress
   module Hermes  
     class Tracker

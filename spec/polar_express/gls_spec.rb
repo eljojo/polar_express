@@ -8,7 +8,7 @@ describe PolarExpress do
       @tracker.courier.should eq :GLS
     end
     it "tracks it" do
-      @tracker.track!.status.should eq :delivered
+      @tracker.track!.status.should eq :delivery_succeeded
     end
     it "records tracking statuses" do
       statuses = @tracker.track!.statuses

@@ -4,6 +4,7 @@ module PolarExpress
     class Tracker
       attr_accessor :number
       def initialize(number)
+        number.gsub!(/[^0-9]/,'')
         @number = number
       end
       def track!

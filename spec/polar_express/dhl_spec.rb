@@ -21,5 +21,9 @@ describe PolarExpress do
       statuses = @tracker.track!.statuses
       statuses.find { |status| status[:status] == :return_shipment }.should_not be_nil
     end
+    it "only considers numbers from tracking number" do
+      tracker = PolarExpress.new('DHL', '777.707971 894')
+      tracker.shipping_number.should == '777707971894'
+    end
   end
 end

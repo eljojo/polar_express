@@ -9,7 +9,6 @@ module PolarExpress
       def track!
         info = ShippingInfo.new(@number)
         info.statuses = timeline
-        pp info.statuses
         info
       end
       private

@@ -3,7 +3,7 @@
 Get on board of The Polar Express and let's have a train ride to package tracking!
 
 ## Gem in development
-Note: this gem is in current development, so don't expect anything to work yet (not even the usage example!!!)
+Note: this gem is in current development, so things might change. Expect it to break!!!
 
 Feel free to contribute to the project :)
 
@@ -45,6 +45,10 @@ info.statuses
 #   :status=>:delivered,
 #   :text=>"The recipient has picked up the shipment from the retail outlet"}]
 ```
+## Supported Couriers
+* DHL (Germany)
+* GLS (Germany)
+* Hermes (Germany)
 
 ## Contributing
 
@@ -56,7 +60,8 @@ info.statuses
 
 
 ### What can I help with?
-- work on DHL implementation
+- improve couriers implementation
+- implement new couriers
 - write more tests
 - documentation. rdoc?
 - discuss about the structure of the gem. is there space for improvement?

@@ -65,3 +65,9 @@ info.statuses
 - write more tests
 - documentation. rdoc?
 - discuss about the structure of the gem. is there space for improvement?
+
+
+## Remember
+You gotta believe in magic.
+
+![Polar Express](http://i.imgur.com/Zvxf3PC.jpg)

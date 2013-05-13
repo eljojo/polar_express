@@ -21,6 +21,13 @@ describe PolarExpress do
       statuses = @tracker.track!.statuses
       statuses.find { |status| status[:status] == :return_shipment }.should_not be_nil
     end
+    it "recognizes every status" do
+      @tracker = PolarExpress.new('DHL', '100276522814')
+      statuses = @tracker.track!.statuses
+      unrecognized_statuses = statuses.select { |status| status[:status] == :other }
+      pp unrecognized_statuses unless unrecognized_statuses.empty?
+      unrecognized_statuses.should be_empty
+    end
     it "only considers numbers from tracking number" do
       tracker = PolarExpress.new('DHL', '777.707971 894')
       tracker.shipping_number.should == '777707971894'

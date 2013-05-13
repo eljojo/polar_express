@@ -30,13 +30,14 @@ module PolarExpress
             else
               status_text = tr.css('td.status').text.strip
             end
+            next if status_text == '--'
             {
               date: DateTime.parse(get_date(tr.css('td.overflow').text)),
               city: (city = tr.css('td.location').text.strip) == '--' ? nil : city,
               status: text_to_status(status_text),
               text: status_text
             }
-          end
+          end.compact
         end
         def text_to_status(text)
           match = Statuses.find do |status, regexes|
@@ -70,6 +71,7 @@ module PolarExpress
       :destination_parcel_center => [
         /Die Sendung wurde im Ziel-Paketzentrum bearbeitet/,
         /Die Sendung wurde innerhalb des Ziel-Paketzentrums weitergeleitet/,
+        /Die Retouren-Sendung wurde im Ziel-Paketzentrum bearbeitet/
       ],
       :in_delivery_vehicle => [
         /Die Sendung befindet sich auf dem Weg zur PACKSTATION/,
@@ -107,6 +109,7 @@ module PolarExpress
         /Die Sendung wurde fehlgeleitet und konnte nicht zugestellt werden. Die Sendung wird umadressiert und an den Empfänger weitergeleitet/,
         /Die Sendung wurde zurückgestellt. Die Zustellung erfolgt voraussichtlich am nächsten Werktag/,
         /Nicht durch DHL beeinflussbare Verzögerung in der Verzollung/,
+        /Die Sendung wurde im Paketzentrum manuell nachbearbeitet/
       ],
       :on_hold_at_depot => [
         /Sendung nach Zustellversuch zurück in DHL Station/,
@@ -116,6 +119,7 @@ module PolarExpress
         /Die Auslands-Sendung wurde im Start-Paketzentrum bearbeitet/,
         /Die Sendung wurde im Paketzentrum bearbeitet/,
         /Die Sendung wurde im Start-Paketzentrum bearbeitet/,
+        /Die Retouren-Sendung wurde im Start-Paketzentrum bearbeitet/
       ],
       :return_shipment => [
         /Die Sendung wurde nicht abgeholt und wird zurückgesandt/,

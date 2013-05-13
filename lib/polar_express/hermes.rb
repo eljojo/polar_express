@@ -57,6 +57,9 @@ module PolarExpress
       :delivery_succeeded => [
         /Die Sendung wurde zugestellt/,
       ],
+      :return_succeeded => [
+        /Die Sendung ist beim Versender eingegangen/
+      ],
       :destination_parcel_center => [
           /Die Sendung (wurde von|ist in) der Hermes Niederlassung (.+) (übernommen|eingetroffen)/,
       ],
@@ -93,6 +96,7 @@ module PolarExpress
         /Der Empfänger wurde zum 3. Mal nicht angetroffen/,
         /Die Sendung ist im Hermes PaketShop eingegangen/,
         /Die Sendung liegt im Hermes PaketShop zur Abholung bereit/,
+        /Die Sendung wurde im Hermes PaketShop abgegeben/
       ]
     }.freeze
   end

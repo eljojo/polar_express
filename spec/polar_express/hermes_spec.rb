@@ -14,5 +14,11 @@ describe PolarExpress do
       statuses = @tracker.track!.statuses
       statuses.length.should > 1
     end
+    it "recognizes every status" do
+      statuses = @tracker.track!.statuses
+      unrecognized_statuses = statuses.select { |status| status[:status] == :other }
+      pp unrecognized_statuses unless unrecognized_statuses.empty?
+      unrecognized_statuses.should be_empty
+    end
   end
 end

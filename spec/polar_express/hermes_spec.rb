@@ -13,7 +13,6 @@ describe PolarExpress do
     it "records tracking statuses" do
       statuses = @tracker.track!.statuses
       statuses.length.should > 1
-      pp statuses
     end
   end
 end

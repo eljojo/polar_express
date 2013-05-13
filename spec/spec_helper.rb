@@ -11,4 +11,5 @@ RSpec.configure do |config|
 
   # Use the specified formatter
   config.formatter = :documentation # :progress, :html, :textmate
+  config.filter_run_including :focus => true
 end

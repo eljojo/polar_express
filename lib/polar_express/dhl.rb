@@ -35,7 +35,8 @@ module PolarExpress
               date: DateTime.parse(get_date(tr.css('td.overflow').text)),
               city: (city = tr.css('td.location').text.strip) == '--' ? nil : city,
               status: text_to_status(status_text),
-              text: status_text
+              text: status_text,
+              date_text: get_date(tr.css('td.overflow').text)
             }
           end.compact
         end

@@ -1,6 +1,6 @@
 # encoding: utf-8
 module PolarExpress
-  module Hermes  
+  module Hermes
     class Tracker
       attr_accessor :number
       def initialize(number)
@@ -32,7 +32,8 @@ module PolarExpress
               date: DateTime.parse(tds[0].text + " " + tds[1].text),
               city: nil,
               status: text_to_status(status_text),
-              text: status_text
+              text: status_text,
+              date_text: tds[0].text + " " + tds[1].text
             }
           end.reverse
         end
@@ -43,7 +44,7 @@ module PolarExpress
           (match && match.first) || :other
         end
     end
-    
+
     Statuses = {
       :at_distribution_hub => [
         /Die Sendung wurde im Hermes (.+) sortiert/,

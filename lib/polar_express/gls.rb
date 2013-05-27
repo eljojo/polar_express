@@ -23,7 +23,8 @@ module PolarExpress
             {
               city: event['address']['city'],
               date: DateTime.parse(event['date'] + ' ' + event['time'].split(':')[0] + ':00'),
-              text: event['evtDscr']
+              text: event['evtDscr'],
+              date_text: event['date'] + ' ' + event['time'].split(':')[0] + ':00'
             }
           end.uniq.reverse
         end

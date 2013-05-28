@@ -4,7 +4,7 @@ module PolarExpress
     class Tracker
       attr_accessor :number
       def initialize(number)
-        @number = number
+        @number = number.dup
       end
       def track!
         info = ShippingInfo.new(@number)

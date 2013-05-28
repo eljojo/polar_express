@@ -28,9 +28,9 @@ describe PolarExpress do
       pp unrecognized_statuses unless unrecognized_statuses.empty?
       unrecognized_statuses.should be_empty
     end
-    it "only considers numbers from tracking number" do
-      tracker = PolarExpress.new('DHL', '777.707971 894')
-      tracker.shipping_number.should == '777707971894'
+    it "only considers numbers and letters from tracking number" do
+      tracker = PolarExpress.new('DHL', '77A7.707971 894')
+      tracker.shipping_number.should == '77A7707971894'
     end
   end
 end

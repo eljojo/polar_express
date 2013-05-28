@@ -3,9 +3,8 @@ module PolarExpress
   module DHL
     class Tracker
       attr_accessor :number
-      def initialize(number)
-        number.gsub!(/[^0-9]/,'')
-        @number = number
+      def initialize(shipment_number)
+        @number = shipment_number.dup.gsub(/[^A-Za-z0-9]/,'')
       end
       def track!
         info = ShippingInfo.new(@number)

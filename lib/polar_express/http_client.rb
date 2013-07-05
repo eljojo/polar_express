@@ -21,7 +21,9 @@ module PolarExpress
       opened_before = !!@connection
       open(uri) unless @connection
 
-      result = @connection.get(uri.path).read_body
+      req = Net::HTTP::Get.new(uri)
+      req.basic_auth uri.user, uri.password if uri.user
+      result = @connection.request(req).body
 
       close unless opened_before
       result
@@ -46,6 +48,7 @@ module PolarExpress
       uri = get_uri(url)
       @connection = Net::HTTP.new(uri.host, uri.port)
       prepare_connection(uri)
+      @connection.start
     end
 
     def close

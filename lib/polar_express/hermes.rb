@@ -21,7 +21,7 @@ module PolarExpress
         def page
           return @page if @page
           @http_client = HTTPClient.new(old_tls: true, use_ssl: true)
-          @http_client.open('https://www.myhermes.de')
+          @http_client.open('https://www.myhermes.de/')
           home_page_html = @http_client.get home_page_url
           home_page_doc  = Nokogiri::HTML(home_page_html)
           tracking_html = @http_client.post(

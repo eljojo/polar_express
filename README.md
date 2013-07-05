@@ -2,10 +2,9 @@
 
 Get on board of The Polar Express and let's have a train ride to package tracking!
 
-## Gem in development
-Note: this gem is in current development, so things might change. Expect it to break!!!
-
-Feel free to contribute to the project :)
+## Discontinued
+Hi, due to time restrictions I'm not going to be able to keep updating this.
+If you happen to actually use it write me an e-mail jojo [at] eljojo [dot] net.
 
 ## Installation
 
@@ -27,7 +26,7 @@ Or install it yourself as:
 @tracker = PolarExpress.new('DHL', '017219678663')
 info = @tracker.track!
 info.status # => :delivered
-info.statuses 
+info.statuses
 # [{:date=>
 #    #<DateTime: 2012-12-05T15:52:00+08:00>,
 #   :city=>nil,

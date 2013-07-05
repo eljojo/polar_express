@@ -12,16 +12,25 @@ module PolarExpress
         info
       end
       private
-        def tracking_form_uri
-          html = Nokogiri::HTML open 'https://www.myhermes.de/wps/portal/paket/Home/privatkunden/sendungsverfolgung/'
-          URI('https://www.myhermes.de' + html.css('form#shipmentTracingDTO').first['action'])
+        def home_page_url
+          'https://www.myhermes.de/wps/portal/paket/Home/privatkunden/sendungsverfolgung/'
         end
-        def post_tracking_page
-          res = Net::HTTP.post_form(tracking_form_uri, 'shipmentID' => @number)
-          res.body
+        def tracking_url(home_page_doc)
+          'https://www.myhermes.de' + home_page_doc.css('form#shipmentTracingDTO').first['action']
         end
         def page
-          @page ||= Nokogiri::HTML post_tracking_page
+          return @page if @page
+          @http_client = HTTPClient.new(old_tls: true, use_ssl: true)
+          @http_client.open('https://www.myhermes.de')
+          home_page_html = @http_client.get home_page_url
+          home_page_doc  = Nokogiri::HTML(home_page_html)
+          tracking_html = @http_client.post(
+                                            tracking_url(home_page_doc),
+                                            'shipmentID' => @number
+                                            )
+          @page = Nokogiri::HTML tracking_html
+          @http_client.close
+          @page
         end
         # TODO: implement cities
         def timeline

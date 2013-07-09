@@ -63,7 +63,6 @@ module PolarExpress
       :delivery_succeeded => [
         /Der Empfänger hat die Sendung aus der PACKSTATION abgeholt/,
         /Der Empfänger hat die Sendung in der Filiale abgeholt/,
-        /Die Sendung wurde abgeholt/,
         /Die Sendung wurde dem Empfänger per vereinfachter Firmenzustellung ab Zustellbasis zugestellt/,
         /Die Sendung wurde erfolgreich zugestellt/,
         /Die Überweisung des Nachnahme-Betrags an den Zahlungsempfänger ist erfolgt/,
@@ -98,6 +97,7 @@ module PolarExpress
         /Sendung ist in der Umschlagbasis eingegangen/,
         /Sendung wurde weiter bearbeitet/,
         /Verzollung abgeschlossen/,
+        /Die Sendung wurde abgeholt/,
       ],
       :new_delivery_attempt => [
         /Es erfolgt ein 2. Zustellversuch/,

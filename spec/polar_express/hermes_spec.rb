@@ -2,7 +2,7 @@ require 'spec_helper'
 describe PolarExpress do
  context 'Hermes' do
     before do
-      @tracker = PolarExpress.new('Hermes', '71178112099170')
+      @tracker = PolarExpress.new('Hermes', '74290110313472')
     end
     it "recognizes it" do
       @tracker.courier.should eq :Hermes

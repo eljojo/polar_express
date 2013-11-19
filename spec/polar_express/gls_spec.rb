@@ -2,7 +2,7 @@ require 'spec_helper'
 describe PolarExpress do
   context 'GLS' do
     before do
-      @tracker = PolarExpress.new('GLS', '291740105981')
+      @tracker = PolarExpress.new('GLS', '851399109947')
     end
     it "recognizes it" do
       @tracker.courier.should eq :GLS

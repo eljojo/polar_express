@@ -2,7 +2,7 @@ require 'spec_helper'
 describe PolarExpress do
   context 'DHL' do
     before do
-      @tracker = PolarExpress.new('DHL', '015240292094')
+      @tracker = PolarExpress.new('DHL', 'JJD000390003201166108')
     end
     it "recognizes it" do
       @tracker.courier.should eq :DHL
@@ -15,7 +15,7 @@ describe PolarExpress do
       statuses.length.should > 1
     end
     it "tracks date correctly" do
-      @tracker.track!.statuses.first[:date].should == DateTime.new(2013, 7, 3, 18, 9)
+      @tracker.track!.statuses.first[:date].should == DateTime.new(2013, 10, 28, 14, 31)
     end
     it "handles package refusals" do
       pending "we needz shipping codes with refuzalz"
@@ -23,7 +23,7 @@ describe PolarExpress do
       statuses.find { |status| status[:status] == :return_shipment }.should_not be_nil
     end
     it "recognizes every status" do
-      @tracker = PolarExpress.new('DHL', '100276522814')
+      @tracker = PolarExpress.new('DHL', 'JJD000390003201166108')
       statuses = @tracker.track!.statuses
       unrecognized_statuses = statuses.select { |status| status[:status] == :other }
       pp unrecognized_statuses unless unrecognized_statuses.empty?
